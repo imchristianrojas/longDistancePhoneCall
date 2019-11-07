@@ -297,6 +297,7 @@ int main() {
         }
 
     }
+    myFile.close();
     cout<<"------------------------"<<endl;
     cout<<"           Total: $"<<runningTotal<<endl;
 
