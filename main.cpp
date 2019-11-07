@@ -25,11 +25,9 @@ double caluclate(string day,string time,int duration){
 
     double total,difference,newDuration;
     difference = 1;
-    newDuration = 1;//no difference if i didnt initlize it just lazy to remove.
+    newDuration = 1;
 
 
-    /*for lack of a better method I split the hours and minutes from 00:00 format and assign them
-    to variables accordingly*/
 
    string hour = (time.length()==5)? "  ":" ";
     string min = "  ";
@@ -52,14 +50,10 @@ double caluclate(string day,string time,int duration){
     //"casting" string to int
     istringstream iss(hour);
     iss>>newHour;
-    istringstream drake(min);//I was listening to drake lol.
+    istringstream drake(min);//I was listening to drake.
     drake>>newMin;
 
-    initialHour = newHour;//before it changes if it changes
-
-    /*I wanted a way to idenitfy what day the file gave me. But I felt comparings strings and processing
-    it in that manner was too complicated for this task. So I assigned an array of strings and looped through
-    and assigned the day given to an integer of the instance*/
+    initialHour = newHour;//before it changes (if it changes)
 
     for(dayId = 0;dayId<7;dayId++){
         if(days[dayId] == day){
@@ -69,9 +63,6 @@ double caluclate(string day,string time,int duration){
     }
 
 
-
-    /*This simple lines of code took a while for me figure out
-    since having to change rates was a little too overwhelming*/
 
     if(duration+newMin>=60){
 
@@ -268,7 +259,7 @@ int main() {
 
     if(myFile.fail()){
         cerr<<"Cannot Open File!"<<endl;
-        //exit(1);
+    
     }
 
 
@@ -278,7 +269,6 @@ int main() {
              myFile>>day>>time>>duration;
 
             if(myFile.eof()){
-
                 break;
             }
 
