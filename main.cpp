@@ -10,14 +10,40 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <math.h>
 
 double rate;
 using namespace std;
 
+
+
+
+
+double specialCase(double before,double after,int hr,int hr2){
+    
+    double total1,total2,bigTotal;
+    
+    if(hr>=8 && hr2<=18){
+        total1 = 0.45*before;
+        
+    }
+    if(hr2<8 || hr2>18){
+        total2 = 0.25*after;
+    }
+    bigTotal = total1+total2;
+    return bigTotal;
+    
+    
+    
+}
+
 double timeCal(string day,string time,double duration){
-    int num;
-    double total;
-    double extraTime;
+   
+    string totaltime;
+    int hr,min,hr2;
+    double num,total,extra,leftHand;
+    
+    extra = 1.0;
     
     string hour = (time.length()==5)? "  ":" ";
     string minute = "  ";
@@ -41,45 +67,84 @@ double timeCal(string day,string time,double duration){
         }
         
     }
-    hour = hour+minute;
+    totaltime = hour+minute;
+    istringstream tot(totaltime);
+    tot>>num;
     istringstream iss(hour);
-    iss>>num;
+    iss>>hr;
+    istringstream isl(minute);
+    isl>>min;
     
-    //cout<<num;
+    
+    
+    
+    
+    
+    cout<<min;
+    
+    
     if(day == "Sat" || day == "sat" ||day == "Sun" || day =="sun"){
     
         rate = 0.15;
-        total = rate*duration;
+        total = rate*duration * extra;
         return total;
     
     }
     
-    
     // use duration and time and see if they overlap and if they do change rate get differnece and multiply by rate and make a sum of total.
+    if(min+duration>=60){
+              
+              hr2 = hr + 1;//if 25==1
+              
+              extra = min+duration-60;//rh
+              extra = abs(extra);
+              leftHand = 60-min;//lh
+        return specialCase(leftHand,extra,hr,hr2);
+        
+        
+    }
+    
+    
+    if(hr>=8&&hr<=18){
+
+            
+        
+        rate = 0.40;
+        total = duration*rate*extra;
+        return total;
+        
+    }
+    else{
+        rate = 0.25;
+        total = duration*rate*extra;
+        return total;
+        
+    }
+    
     
     
     if(num>=800&&num<=1800){
 
         rate = 0.40;
-        total = duration*rate;
+        total = duration*rate*extra;
         return total;
     }
     else{
         if(duration+num>=800||duration+num<=1800){
-            extraTime = duration+num;
             
             rate = 0.40;
+            total = duration*rate*extra;
             
             
         }
         rate = 0.25;
-        total= duration*rate;
+        total= duration*rate*extra;
         return total;
-    }
-     
         
-    
-
+        
+        
+    }
+  
     
     
     return 0;
@@ -105,11 +170,10 @@ int main() {
             myFile>>day>>time>>duration;
             cout<<timeCal(day,time,duration)<<endl;;
             
-            //cout<<day<<" "<<time<<" "<<duration<<endl;
+            cout<<day<<" "<<time<<" "<<duration<<endl;
             
         }
     }
-    
     
     
     return 0;
