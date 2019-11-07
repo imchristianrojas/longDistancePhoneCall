@@ -18,15 +18,17 @@ using namespace std;
 
 
 double caluclate(string day,string time,int duration){
-    
-    
+   
     string days[7] = {"Su","Mo","Tu","We","Th","Fr","Sa"};
     int dayId,newHour,newMin,initialHour;
 
     double total,difference,newDuration;
     difference = 1;
-    newDuration = 1;
+    newDuration = 1;//no difference if i didnt initlize it just lazy to remove.
     
+   
+    /*for lack of a better method I split the hours and minutes from 00:00 format and assign them
+    to variables accordingly*/
     
    string hour = (time.length()==5)? "  ":" ";
     string min = "  ";
@@ -46,13 +48,17 @@ double caluclate(string day,string time,int duration){
             }
     }
     }
-    
+    //"casting" string to int
     istringstream iss(hour);
     iss>>newHour;
-    istringstream drake(min);
+    istringstream drake(min);//I was listening to drake lol.
     drake>>newMin;
     
     initialHour = newHour;//before it changes if it changes
+    
+    /*I wanted a way to idenitfy what day the file gave me. But I felt comparings strings and processing
+    it in that manner was too complicated for this task. So I assigned an array of strings and looped through
+    and assigned the day given to an integer of the instance*/
     
     for(dayId = 0;dayId<7;dayId++){
         if(days[dayId] == day){
@@ -63,10 +69,13 @@ double caluclate(string day,string time,int duration){
    
     
 
+    /*This simple lines of code took a while for me figure out
+    since having to change rates was a little too overwhelming*/
+    
     if(duration+newMin>=60){
     
-        difference = (duration+newMin)-60;//right hand side
-        newDuration = duration-difference;//left hand side
+        difference = (duration+newMin)-60;//"right hand" side  eg:duratation = 20 00:50
+        newDuration = duration-difference;//"left hand" side eg: 01:10
         newHour++;
         
     }
@@ -84,6 +93,8 @@ double caluclate(string day,string time,int duration){
         }
     }
     
+    
+    //Pretty much straight forward from here each case with it's own unique process
     switch (dayId) {
         case 0:
             //Sunday special case.
@@ -226,6 +237,7 @@ int main() {
     string day,time;
     int duration;
     
+    //basic opening file process.
     ifstream myFile;
     myFile.open("call_history.txt");
     
@@ -234,6 +246,7 @@ int main() {
         exit(1);
     }
 
+    
     if(myFile.is_open()){
         while (!myFile.eof()) {
             myFile>>day>>time>>duration;
